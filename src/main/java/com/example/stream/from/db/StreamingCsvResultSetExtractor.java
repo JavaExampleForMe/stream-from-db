@@ -43,7 +43,7 @@ public class StreamingCsvResultSetExtractor implements ResultSetExtractor<PipedO
         try {
             int columnCount = resultSet.getMetaData().getColumnCount();
             while (resultSet.next()) {
-                for (int i = 0; i < columnCount; i++) {
+                for (int i = 1; i < columnCount + 1; i++) {
                     if(resultSet.getString(i) != null && resultSet.getString(i).contains(",")){
                             String strToAppend = "\"" + resultSet.getString(i) + "\"";
                             csvRowBuilder.append(strToAppend);
@@ -75,7 +75,7 @@ public class StreamingCsvResultSetExtractor implements ResultSetExtractor<PipedO
     private void streamHeaders(ResultSetMetaData resultSetMetaData) {
         StringBuilder headersCsvBuilder = new StringBuilder();
 
-        for (int i = 0; i < resultSetMetaData.getColumnCount(); i++) {
+        for (int i = 1; i < resultSetMetaData.getColumnCount() + 1; i++) {
             headersCsvBuilder.append(resultSetMetaData.getColumnLabel(i)).append(",");
         }
         int rowLength = headersCsvBuilder.length();
