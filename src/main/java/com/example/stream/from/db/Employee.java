@@ -25,11 +25,26 @@ public class Employee {
                         preparedStatement.setInt(1, employeeId);
                     }
                 };
-               StreamingZipResultSetExtractor zipExtractor = new StreamingZipResultSetExtractor(outputStream, employeeId, false);
+                StreamingZipResultSetExtractor zipExtractor = new StreamingZipResultSetExtractor(outputStream, employeeId, isMoreThanOneFile(jdbcTemplate, employeeId));
                 Integer numberOfInteractionsSent = jdbcTemplate.query(sqlQuery, preparedStatementSetter, zipExtractor);
 
             }
         };
         return streamingResponseBody;
+    }
+
+    private boolean isMoreThanOneFile(JdbcTemplate jdbcTemplate, int employeeId) {
+        Integer numberOfCars = getCount(jdbcTemplate, employeeId);
+        return numberOfCars >= StreamingZipResultSetExtractor.MAX_ROWS_IN_CSV;
+    }
+
+    private Integer getCount(JdbcTemplate jdbcTemplate, int employeeId) {
+
+        String sqlQuery = "SELECT count([Id]) " +
+                "FROM Cars " +
+                "WHERE EmployeeID=? ";
+
+        return jdbcTemplate.queryForObject(sqlQuery, new Object[] { employeeId }, Integer.class);
+
     }
 }

@@ -19,7 +19,7 @@ import java.util.zip.ZipOutputStream;
 @Slf4j
 public class StreamingZipResultSetExtractor implements ResultSetExtractor<Integer> {
     private final static int CHUNK_SIZE = 100000;
-    private final static int MAX_ROWS_IN_CSV = 10;
+    public final static int MAX_ROWS_IN_CSV = 10;
     private OutputStream outputStream;
     private int employeeId;
     private StreamingCsvResultSetExtractor streamingCsvResultSetExtractor;
